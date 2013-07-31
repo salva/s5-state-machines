@@ -4,13 +4,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-<title>[slide show title here]</title>
+<title>AnyEvent + Class::StateMachine</title>
 <!-- metadata -->
 <meta name="generator" content="S5" />
 <meta name="version" content="S5 1.1" />
-<meta name="presdate" content="20050728" />
-<meta name="author" content="Eric A. Meyer" />
-<meta name="company" content="Complex Spiral Consulting" />
+<meta name="presdate" content="20130731" />
+<meta name="author" content="Salvador Fandi&ntilde;o" />
+<!-- meta name="company" content="Complex Spiral Consulting" /-->
 <!-- configuration parameters -->
 <meta name="defaultView" content="slideshow" />
 <meta name="controlVis" content="hidden" />
@@ -29,8 +29,8 @@
 <div id="currentSlide"><!-- DO NOT EDIT --></div>
 <div id="header"></div>
 <div id="footer">
-<h1>[location/date of presentation]</h1>
-<h2>[slide show title here]</h2>
+<h1>YAPC::Europe 2013</h1>
+<h2>AnyEvent + Class::StateMachine</h2>
 </div>
 
 </div>
@@ -39,12 +39,133 @@
 <div class="presentation">
 
 <div class="slide">
-<h1>[slide show title here]</h1>
-<h2>[slide show subtitle here]</h2>
-<h3>[name of presenter]</h3>
-<h4>[affiliation of presenter]</h4>
+<h1>AnyEvent + Class::StateMachine</h1>
+<h2>Writing maintenable event-driven programs</h2>
+<h3>Salvador Fandi&ntilde;o</h3>
+<h4>(sfandino@yahoo.com)</h4>
 </div>
 
+<!--div class="slide">
+<h1>Index</h1>
+<ul>
+<li>[point one]</li>
+<li>[point two]</li>
+<li>[point three]</li>
+<li>[point four]</li>
+<li>[point five]</li>
+</ul>
+<div class="handout">
+</div>
+</div-->
+
+<!--div class="slide">
+<h1>Introduction</h1>
+</div-->
+
+<div class="slide">
+<h1>Event-driven programming</h1>
+
+<h2>Wikipedia definition:</h2>
+<i>
+<p>Event-driven programming is a programming paradigm in which the flow
+of the program is determined by events.
+
+<p>It can also be defined as an application architecture technique in
+which the application has a main loop which is clearly divided down to
+two sections:
+
+<ul>
+<li>the first is event selection</li>
+<li>the second is event handling</li>
+</ul>
+</i>
+<div class="handout">
+</div>
+</div>
+
+<div class="slide">
+<h1>AnyEvent</h1>
+
+<h2>Event selection:</h2>
+
+<p>AnyEvent + backends (i.e. EV)
+
+<h2>Event handling:</h2>
+
+<p>Callbacks...
+
+<ul>
+<li>very flexible</li>
+<li>lead to spaghetti code</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Event-driven programming, callbacks and spaghetti code</h1>
+<p>Regular, well-written, non event-driven programs (OO or not), are
+usually structured in a top-down style where high level functions call
+lower level ones.
+
+<p>On the event-driven case, the program is divided attending
+exclusively at the non-blocking criteria into a flat set of small
+blocks. There is no structure or hierarchie on the code, just a bunch
+of subroutines that are invoked in a non-explicit order from the event
+loop.
+
+<p>In order to share information between the callbacks, state has to
+maintained at and outer scope (i.e inside global variables or
+objects).
+</div>
+
+<div class="slide">
+<h1>(Finite) State machines</h1>
+
+<h2>Wikipedia definition:</h2>
+
+<i>
+<p>A state machine, is conceived as an abstract machine that can be in one of a finite number of states.
+
+<p>The machine is in only one state at a time; the state it is in at any given time is called the current state.
+
+<p>It can change from one state to another when initiated by a triggering event or condition; this is called a transition.
+
+</div>
+
+<div class="slide">
+<h1>State machines</h1>
+
+<h2>Defining a state machine:</h2>
+
+<ul>
+  <li><b>states</b></li>
+  <li><b>events</b> and <b>transitions</b></li>
+</ul>
+
+<p>In practice also...
+
+<ul>
+  <li><b>actions</b> that are run...</li>
+  <ul>
+    <li>on entering some state</li>
+    <li>on leaving some state</li>
+    <li>on some transition</li>
+    <li>when some event happens</li>
+  </ul>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Event-driven programming and state machines</h1>
+
+State machines can be used to structure the code of event-driven
+programs:
+
+<ul>
+  <li>An state machine is an object</li>
+  <li>The states, events and transitions represent program flow</li>
+  <li>The small non-blocking calls become the actions</li>
+</ul>
+</div>
 
 <div class="slide">
 <h1>[slide title]</h1>
@@ -56,7 +177,6 @@
 <li>[point five]</li>
 </ul>
 <div class="handout">
-[any material that should appear in print but not on the slide]
 </div>
 </div>
 
