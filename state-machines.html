@@ -123,11 +123,14 @@ objects).
 <h2>Wikipedia definition:</h2>
 
 <i>
-<p>A state machine, is conceived as an abstract machine that can be in one of a finite number of states.
+<p>A state machine, is conceived as an abstract machine that can be in
+one of a finite number of states. 
 
-<p>The machine is in only one state at a time; the state it is in at any given time is called the current state.
+<p>The machine is in only one state at a time; the state it is in at
+any given time is called the current state. 
 
-<p>It can change from one state to another when initiated by a triggering event or condition; this is called a transition.
+<p>It can change from one state to another when initiated by a
+triggering event or condition; this is called a transition. 
 
 </div>
 
@@ -141,7 +144,7 @@ objects).
   <li><b>events</b> and <b>transitions</b></li>
 </ul>
 
-<p>In practice also...
+<p>In practice, there are also...
 
 <ul>
   <li><b>actions</b> that are run...</li>
@@ -157,14 +160,190 @@ objects).
 <div class="slide">
 <h1>Event-driven programming and state machines</h1>
 
-State machines can be used to structure the code of event-driven
-programs:
+State machines allow use to structure event-driven programs:
 
 <ul>
   <li>An state machine is an object</li>
-  <li>The states, events and transitions represent program flow</li>
-  <li>The small non-blocking calls become the actions</li>
+  <li>An event-driven program is composed of multiple state-machines</li> 
+  <li>The states, events and transitions can be defined using some domain specific language (DSL)</li>
+  <li>State machines objects can also be viewed as agents running in parallel</li>
+  <li>The states, events and transitions define the agent flow</li>
+  <li>The small, non-blocking, calls become the actions</li>
 </ul>
+
+</div>
+
+<div class="slide">
+<h1>POE::NFA - nondeterministic finite automaton</h1>
+<pre>
+POE::NFA->spawn(
+    inline_states => {
+      initial => {
+        setup => \&setup_stuff,
+      },
+      state_login => {
+        on_entry => \&login_prompt,
+        on_input => \&save_login,
+      },
+      state_password => {
+        on_entry => \&password_prompt,
+        on_input => \&check_password,
+      },
+      state_cmd => {
+        on_entry => \&command_prompt,
+        on_input => \&handle_command,
+      },
+    },
+  )->goto_state(initial => "setup");
+</pre>
+</div>
+
+<div class="slide">
+<h1>CPAN</h1>
+<p>Lots of modules: <b>POE::NFA</b>, FSA::Engine, FSA::Rules, FSM::Simple, Basset::Machine, etc...
+<p>No one is perfect!
+
+<ul>
+<li>Too abstract, too theorical, too generic</li>
+<li>Oriented towards some specific task (i.e. parsing)</li>
+<li>Specific to some framework</li>
+<li>Not very efficient</li>
+<li>...</li>
+</ul>
+
+</div>
+
+<div class="slide">
+<h1>Class::StateMachine</h1>
+
+<p>Initially (2006)...
+
+<ul>
+<li>A light framework for implementing very efficient state-machines</li>
+<li>The focus was on event-driven/network applications</li>
+<li>Yet, generic</li>
+<li>Low level</li>
+<li>Event dispatching was the only feature supported</li>
+<li>Sophisticated blend between OOP and state-machines</li>
+<li>Scary implementation</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Class::StateMachine</h1>
+
+<p>Today...
+
+<ul>
+<li>Evolved guided by practical requirements</li>
+<li>Lots of belts and whistles</li>
+<li>Class::StateMachine is still a low level framework</li>
+<li>Scary implementation, but it uses <b>mro</b> now</li>
+<li>Class::StateMachine::Declarative is high level companion</li>
+</li>
+
+</ul>
+
+</div>
+
+<div class="slide">
+<h1>Class::StateMachine::Declarative</h1>
+<p>An opinionated high-level framework for building state-machines.
+
+<p>The aim is code clarity and maintainability.
+
+<p>Quite complex state-machines (tens of states).
+
+<p>It solves my problem quite well.
+
+<p>...don't know about yours.
+
+<p>Still a work in progress, still learning.
+
+</div>
+
+<div class="slide">
+<h1>Class::StateMachine::Declarative - Usage</h1>
+
+<p>Derive from Class::StateMachine...
+
+<pre>
+use parent qw(Class::StateMachine); 
+</pre>
+
+<p>Use Class::StateMachine::Declarative to declare the state-machine
+states, transitions and actions:
+
+<pre>
+use Class::StateMachine::Declarative
+  foo => { ... },
+  bar => { ... };
+</pre>
+
+</div>
+
+<div class="slide">
+<h1>Class::StateMachine::Declarative - Usage</h1>
+
+<pre>
+use Class::StateMachine::Declarative
+  new              => { transition => { run => 'asking_for_login' } },
+
+  asking_for_login => { enter => 'login_prompt',
+                        transitions => { got_login => 'password' } },
+
+  asking_for_pwd   => { enter => 'pwd_prompt',
+                        transitions => { got_pwd => 'asking_for_cmd',
+                                         got_pwd_error => 'asking_for_login' } },
+
+  asking_for_cmd   => { enter => 'cmd_prompt',
+                        transitions => { got_cmd => 'running_cmd' } },
+
+  running_cmd      => { enter => 'run_cmd',
+                        transitions => { cmd_done => 'asking_for_cmd' } };
+</pre>
+</div>
+
+<div class="slide">
+<h1>Class::StateMachine::Declarative - Usage</h1>
+<p>Inheritance between states:
+<ul>
+<li>The <b>__any__</b> state</li>
+<li>Substates</li>
+</ul>
+
+<p>Flow usually <b>advance</b>s between states.
+
+<p>Want to run some code <b>before</b> some transition.
+</div>
+
+<div class="slide">
+<h1>Class::StateMachine::Declarative - Usage</h1>
+<pre>
+use Class::StateMachine::Declarative
+  __any__ => { advance => 'on_done',
+               transitions => { on_closed => 'stopped' } },
+
+  auth    => { transitions => { on_error => 'login' },
+               substates => [ login => { enter => 'ask_login },
+                              pwd   => { enter => 'ask_pwd' },
+                                         before => { done => 'check_pwd' } } ] },
+
+  repl    => { transitions => { on_error => 'ask' },
+               substates => [ ask => { enter => ask_cmd },
+                              run => { enter => run_cmd,
+                                       transitions => { on_done => ask } } ] },
+
+  stopped => { enter => 'tell_owner' };
+
+</pre>
+</div>
+
+<div class="slide">
+<h1>Class::StateMachine::Declarative - Usage</h1>
+
+<p>You need a wide monitor to use Class::StateMachine::Declarative!!!
+
 </div>
 
 <div class="slide">
