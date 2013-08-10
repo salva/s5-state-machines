@@ -24,7 +24,6 @@ use Class::StateMachine::Declarative
 
     stopped => { enter => 'tell_parent' };
 
-
 sub ask_login {
     my $self = shift;
     print {$self->{conn}} "User: ";
