@@ -283,20 +283,38 @@ use Class::StateMachine::Declarative
 </div>
 
 <div class="slide">
-<h1>Class::StateMachine::Declarative - Usage</h1>
-
-<pre>
+<h1>Class::StateMachine::Declarative</h1>
+<h2>Basic features:</h2>
+<p><pre>
 use Class::StateMachine::Declarative
-  new              => { transition => { run => 'asking_for_login' } },
 
-  asking_for_login => { enter => 'login_prompt',
+    $state_name => { enter => $enter_action,
+
+                     leave => $leave_action,
+
+                     transitions => { $event => $target_state,
+                                      ...
+                                    }
+                   },
+    ...
+</pre>
+</div>
+
+<div class="slide">
+<h1>Class::StateMachine::Declarative</h1>
+<h2>Example:</h2>
+<p><pre>
+use Class::StateMachine::Declarative
+  new              => { transitions => { run => 'asking_for_login' } },
+
+  asking_for_login => { enter => 'print_login_prompt',
                         transitions => { got_login => 'password' } },
 
-  asking_for_pwd   => { enter => 'pwd_prompt',
+  asking_for_pwd   => { enter => 'print_pwd_prompt',
                         transitions => { got_pwd => 'asking_for_cmd',
                                          got_pwd_error => 'asking_for_login' } },
 
-  asking_for_cmd   => { enter => 'cmd_prompt',
+  asking_for_cmd   => { enter => 'print_cmd_prompt',
                         transitions => { got_cmd => 'running_cmd' } },
 
   running_cmd      => { enter => 'run_cmd',
@@ -305,20 +323,48 @@ use Class::StateMachine::Declarative
 </div>
 
 <div class="slide">
-<h1>Class::StateMachine::Declarative - Usage</h1>
-<p>Inheritance between states:
+<h1>Class::StateMachine::Declarative</h1>
+<h2>Inheritance between states:</h2>
 <ul>
+<li>Substates:
+<p><pre>
+$state_name => { ...,
+                 substates => [ $substate_name => \%substate_decl,
+                                ... ],
+               }
+</pre>
+</li>
 <li>The <b>__any__</b> state</li>
-<li>Substates</li>
 </ul>
-
-<p>Flow usually <b>advance</b>s between states.
-
-<p>Want to run some code <b>before</b> some transition.
 </div>
 
 <div class="slide">
-<h1>Class::StateMachine::Declarative - Usage</h1>
+<h2>Other keywords</h2>
+<ul>
+<li>before: running an action before some event triggers a transition.
+<p><pre>
+$state_name => { before => { $event_name => $method_name,
+                             ...
+                           },
+                 ...,
+               }
+</pre>
+</li>
+<li>advance: moving forward is so common!
+<p><pre>
+$state_name => { advance => $event_name,
+                 ... }
+                 
+</pre>
+</li>
+</ul>
+</div>
+
+
+
+<div class="slide">
+<h1>Class::StateMachine::Declarative</h1>
+<h2>Example:</h2>
 <pre>
 use Class::StateMachine::Declarative
   __any__ => { advance => 'on_done',
