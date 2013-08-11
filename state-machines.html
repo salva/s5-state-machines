@@ -183,11 +183,11 @@ triggering event or condition; this is called a transition.
 </div>
 
 <div class="slide">
-<h5>Event-driven programming and state machines</h5>
+<h5>Event-driven programming + state machines</h5>
 </div>
 
 <div class="slide">
-<h1>Event-driven programming and state machines</h1>
+<h1>Event-driven programming + state machines</h1>
 
 State machines allow us to structure event-driven programs:
 
@@ -204,7 +204,7 @@ State machines allow us to structure event-driven programs:
 
 <div class="slide">
 <h1>POE::NFA - non-deterministic finite automaton</h1>
-<pre>
+<pre><code>
 POE::NFA->spawn(
     inline_states => {
       initial => {
@@ -224,7 +224,7 @@ POE::NFA->spawn(
       },
     },
   )->goto_state(initial => "setup");
-</pre>
+</code></pre>
 </div>
 
 <div class="slide">
@@ -255,7 +255,8 @@ POE::NFA->spawn(
 <li>A light framework for implementing very efficient state-machines</li>
 <li>The focus was on event-driven/network applications</li>
 <li>Yet, generic</li>
-<li>Low level, event dispatching was the only feature supported</li>
+<li>Low level</li>
+<li>event dispatching was the only feature supported</li>
 <li>Sophisticated blend between OOP and state-machines</li>
 <li>Scary implementation</li>
 </ul>
@@ -278,7 +279,7 @@ POE::NFA->spawn(
 <div class="slide">
 <h1>Class::StateMachine usage</h1>
 
-<pre>
+<pre><code>
 class Foo;
 
 use parent 'Class::StateMachine';
@@ -288,12 +289,12 @@ sub foo :OnState(one) { ... }
 sub foo :OnState(two) { ... }
 ...
 
-# dispatch events
+# dispatching events:
 $obj->state('one');
 $obj->foo;
 $obj->state('two');
 $obj->foo;
-</pre>
+</code></pre>
 </div>
 
 <div class="slide">
@@ -330,25 +331,25 @@ when the state changes.
 
 <ul><li>Derive from Class::StateMachine...
 
-<pre>
+<pre><code>
 use parent qw(Class::StateMachine); 
-</pre>
+</code></pre>
 
 <li>and use Class::StateMachine::Declarative to declare the state-machine
 states, transitions and actions:
 
-<pre>
+<pre><code>
 use Class::StateMachine::Declarative
   foo => { ... },
   bar => { ... };
-</pre>
+</code></pre>
 </ul>
 </div>
 
 <div class="slide">
 <h1>Class::StateMachine::Declarative</h1>
 <h2>Basic features:</h2>
-<p><pre>
+<p><pre><code>
 use Class::StateMachine::Declarative
 
     $state_name => { enter => $enter_action,
@@ -360,13 +361,13 @@ use Class::StateMachine::Declarative
                                     }
                    },
     ...
-</pre>
+</code></pre>
 </div>
 
 <div class="slide">
 <h1>Class::StateMachine::Declarative</h1>
 <h2>Example:</h2>
-<p><pre>
+<p><pre><code>
 use Class::StateMachine::Declarative
   new              => { transitions => { run => 'asking_for_login' } },
 
@@ -382,7 +383,7 @@ use Class::StateMachine::Declarative
 
   running_cmd      => { enter => 'run_cmd',
                         transitions => { cmd_done => 'asking_for_cmd' } };
-</pre>
+</code></pre>
 </div>
 
 <div class="slide">
@@ -390,12 +391,12 @@ use Class::StateMachine::Declarative
 <h2>Inheritance between states:</h2>
 <ul>
 <li>Substates:
-<p><pre>
+<p><pre><code>
 $state_name => { ...,
                  substates => [ $substate_name => \%substate_decl,
                                 ... ],
                }
-</pre>
+</code></pre>
 </li>
 <li>The <b>__any__</b> state</li>
 </ul>
@@ -409,19 +410,19 @@ $state_name => { ...,
       <img src="advance-flow.png">
     </div>
       <b>advance</b>: moving forward is so common!
-      <p><pre>
+      <p><pre><code>
 $state_name => { advance => $event_name,
                  ... }
-      </pre>
+      </code></pre>
     </li>
   <li><b>before</b>: running an action before some event triggers a transition.
-    <p><pre>
+    <p><pre><code>
 $state_name => { before => { $event => $method,
                              ...
                            },
                  ...,
                }
-      </pre>
+      </code></pre>
     </li>
   </ul>
 </div>
@@ -429,7 +430,7 @@ $state_name => { before => { $event => $method,
 <div class="slide">
 <h1>Class::StateMachine::Declarative</h1>
 <h2>Improved example:</h2>
-<pre>
+<pre><code>
 use Class::StateMachine::Declarative
   __any__ => { advance => 'on_done',
                transitions => { on_closed => 'stopped' } },
@@ -446,7 +447,7 @@ use Class::StateMachine::Declarative
 
   stopped => { enter => 'tell_owner' };
 
-</pre>
+</code></pre>
 </div>
 
 <div class="slide">
@@ -459,12 +460,12 @@ use Class::StateMachine::Declarative
 <li><b>ignore</b>: discard some uninteresting event
 </ul>
 
-<p><pre>
+<p><pre><code>
 $state_name => { delay => \@events_to_be_delayed,
                  ignore => \@events_to_be_ignored,
                  ...
                }
-</pre>
+</code></pre>
 </div>
 
 <div class="slide">
@@ -521,12 +522,12 @@ $state_name => { delay => \@events_to_be_delayed,
 
 <p>The key to code maintainability is the API provided from the purple layer to the blue layer
 
-<ul>
+<ul style="font-size: 90%">
   <li>Don't pass callbacks from the blue layer to the purple layer.</li>
   <li>Instead, use convention and fire events with well-known names (i.e. "on_done", "on_error").</li>
   <li>Use the object as a blackboard to pass information from the purple layer to the blue layer.</li>
   <li>The methods on the purple layer should be flexible and feature rich.</li>
-  <li>You may like to implement the purple layer as a collection of composable roles.</li>
+  <li>The purple layer may be a collection of composable roles.</li>
 </ul>
 </div>
 
