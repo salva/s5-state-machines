@@ -101,20 +101,38 @@ two sections:
 </div>
 
 <div class="slide">
-<h1>Event-driven programming, callbacks and spaghetti code</h1>
-<p>Regular, well-written, non event-driven programs (OO or not), are
-usually structured in a top-down style where high level functions call
-lower level ones.
+<h1>Callbacks and spaghetti code</h1>
 
-<p>On the event-driven case, the program is divided attending
+<ul>
+
+<li>Regular programs are divided on layers or components with
+delimited interfaces (APIs)</li>
+
+<li>On the event-driven case, the program is divided attending
 exclusively at the non-blocking criteria into a flat set of small
-blocks. There is no structure or hierarchie on the code, just a bunch
-of subroutines that are invoked in a non-explicit order from the event
-loop.
+blocks.</li>
 
-<p>In order to share information between the callbacks, state has to
-maintained at and outer scope (i.e inside global variables or
-objects).
+<li>There is no hierarchie on the code, just a bunch of subroutines
+that are invoked in a non-explicit order from the event loop.</li>
+
+<li>State has to maintained at and outer scope (i.e inside global
+variables or objects).</li>
+
+</ul>
+</div>
+
+<div class="slide">
+<h1>Callbacks and spaghetti code</h1>
+<table>
+  <tr>
+    <th width="50%">Structured top-down programming</th>
+    <th width="50%">Event-driven programming with callbacks</th>
+  </tr>
+  <tr>
+    <td><img src="top-down-flow.png" width="90%"/></td>
+    <td><img src="cb-flow.png" width="90%"/></td>
+  </tr>
+</table>
 </div>
 
 <div class="slide">
@@ -160,7 +178,7 @@ triggering event or condition; this is called a transition.
 <div class="slide">
 <h1>Event-driven programming and state machines</h1>
 
-State machines allow use to structure event-driven programs:
+State machines allow us to structure event-driven programs:
 
 <ul>
   <li>An state machine is an object</li>
@@ -199,7 +217,7 @@ POE::NFA->spawn(
 </div>
 
 <div class="slide">
-<h1>CPAN</h1>
+<h1>CPAN and state-machines</h1>
 <p>Lots of modules: <b>POE::NFA</b>, FSA::Engine, FSA::Rules, FSM::Simple, Basset::Machine, etc...
 <p>No one is perfect!
 
@@ -222,8 +240,7 @@ POE::NFA->spawn(
 <li>A light framework for implementing very efficient state-machines</li>
 <li>The focus was on event-driven/network applications</li>
 <li>Yet, generic</li>
-<li>Low level</li>
-<li>Event dispatching was the only feature supported</li>
+<li>Low level, event dispatching was the only feature supported</li>
 <li>Sophisticated blend between OOP and state-machines</li>
 <li>Scary implementation</li>
 </ul>
@@ -238,17 +255,46 @@ POE::NFA->spawn(
 <li>Evolved guided by practical requirements</li>
 <li>Lots of belts and whistles</li>
 <li>Class::StateMachine is still a low level framework</li>
-<li>Scary implementation, but it uses <b>mro</b> now</li>
+<li>Scary implementation yet, but it uses <b>mro</b> now</li>
 <li>Class::StateMachine::Declarative is high level companion</li>
-</li>
-
 </ul>
-
 </div>
 
 <div class="slide">
+<h1>Class::StateMachine usage</h1>
+
+<pre>
+class Foo;
+use parent 'Class::StateMachine';
+
+sub foo :OnState(one) { ... }
+sub foo :OnState(two) { ... }
+
+...
+
+$obj->state('one');
+$obj->foo;
+$obj->state('two');
+$obj->foo;
+</pre>
+</div>
+
+<div class="slide">
+<h1>Class::StateMachine under the hood</h1>
+
+<p>For every possible state, Class::StateMachine creates a new perl class.
+
+<p>Objects are reblessed on the fly when their state changes.
+
+<p>Some methods (enter_state, leave_state) are called automatically
+when the state changes.
+
+</div>
+
+
+<div class="slide">
 <h1>Class::StateMachine::Declarative</h1>
-<p>An opinionated high-level framework for building state-machines.
+<p>A high-level framework for building state-machines.
 
 <p>The aim is code clarity and maintainability.
 
@@ -361,7 +407,6 @@ $state_name => { advance => $event_name,
 </div>
 
 
-
 <div class="slide">
 <h1>Class::StateMachine::Declarative</h1>
 <h2>Example:</h2>
@@ -386,9 +431,27 @@ use Class::StateMachine::Declarative
 </div>
 
 <div class="slide">
-<h1>Class::StateMachine::Declarative - Usage</h1>
+<h1>Class::StateMachine::Declarative</h1>
 
-<p>Yes, You need a wide monitor to use Class::StateMachine::Declarative!!!
+<h2>More keywords:</h2>
+<ul>
+<li>delay: when you can't handle some event right now but want to save it for later
+
+<li>ignore: discard some uninteresting event
+</ul>
+
+<p><pre>
+$state_name => { delay => \@events_to_be_delayed,
+                 ignore => \@events_to_be_ignored,
+                 ...
+               }
+</pre>
+</div>
+
+<div class="slide">
+<h1>Fitting everything together</h1>
+<h2>The three layers approach</h2>
+
 
 </div>
 
