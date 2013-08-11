@@ -449,24 +449,79 @@ $state_name => { delay => \@events_to_be_delayed,
 </div>
 
 <div class="slide">
-<h1>Fitting everything together</h1>
+<h1>How to write maintenable programs</h1>
+
 <h2>The three layers approach</h2>
 
+<p><center><img src="three-layers.png"></center>
 
 </div>
 
 <div class="slide">
-<h1>[slide title]</h1>
+
+<h1>The three layers</h1>
+
 <ul>
-<li>[point one]</li>
-<li>[point two]</li>
-<li>[point three]</li>
-<li>[point four]</li>
-<li>[point five]</li>
+  <li>The state-machine declaration (blue layer)
+    <ul>
+      <li>Includes the state-machine skeleton definition</li>
+      <li>And the high level glue methods</li>
+      <li>Remember, you can also view it as an agent</li>
+    </ul>
+  </li>
+  <li>The adaptation layer (purple layer)
+    <ul>
+      <li>Low-level "methods" implementing functionality required by all your agents</li>
+      <li>s/methods/flows/</li>
+      <li>calls into AnyEvent</li>
+    </ul>
+  </li>
+  <li>The low level event-distpatcher (red layer)
+    <ul>
+      <li>AnyEvent</li>
+      <li>Related modules: AnyEvent::HTML, AnyEvent::Pg, etc.</li>
+    </ul>
+  </li>
 </ul>
-<div class="handout">
 </div>
+
+<div class="slide">
+<h1>The three layers</h1>
+
+<p>The key to code maintainability is the API provided from the purple layer to the blue layer
+
+<ul>
+  <li>Don't pass callbacks from the blue layer to the purple layer.</li>
+  <li>Instead, use convention and fire events with well-known names (i.e. "on_done", "on_error").</li>
+  <li>Use the object as a blackboard to pass information from the purple layer to the blue layer.</li>
+  <li>The methods on the purple layer should be flexible and feature rich.</li>
+  <li>You may like to implement the purple layer as a collection of composable roles.</li>
+</ul>
 </div>
+
+<div class="slide">
+<h1>Example</h1>
+
+<p>A remote console application:
+
+<ul>
+  <li>The blue layer: <a href="perl/Demo/CLI.pm">Demo::CLI</a></li>
+  <li>The purple layer: <a href="perl/Demo/LineServer.pm">Demo::LineServer</a></li>
+  <li>The main script: <a href="perl/server.pl">server.pl</a></li>
+</ul>
+
+</div>
+
+
+
+<div class="slide">
+<h1>Some real code</h1>
+<ul>
+<li>A blue layer: <a href="https://github.com/theqvd/theqvd/blob/master/ext/QVD-HKD/lib/QVD/HKD/VMHandler/LXC.pm">QVD::HKD::VMHandler::LXC</a>
+<li>A purple layer: <a href="https://github.com/theqvd/theqvd/blob/master/ext/QVD-HKD/lib/QVD/HKD/Agent.pm">QVD::HKD::Agent</a>
+</ul>
+</div>
+
 
 
 </div>
