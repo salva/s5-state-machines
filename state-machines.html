@@ -32,15 +32,13 @@
 <h1>YAPC::Europe 2013</h1>
 <h2>AnyEvent + Class::StateMachine</h2>
 </div>
-
 </div>
-
 
 <div class="presentation">
 
 <div class="slide">
 <h1>AnyEvent + Class::StateMachine</h1>
-<h2>Writing maintenable event-driven programs</h2>
+<h2>Writing maintainable event-driven programs</h2>
 <h3>Salvador Fandi&ntilde;o</h3>
 <h4>(sfandino@yahoo.com)</h4>
 </div>
@@ -61,6 +59,10 @@
 <!--div class="slide">
 <h1>Introduction</h1>
 </div-->
+
+<div class="slide">
+<h5>Event-driven programming</h5>
+</div>
 
 <div class="slide">
 <h1>Event-driven programming</h1>
@@ -88,36 +90,16 @@ two sections:
 
 <h2>Event selection:</h2>
 
-<p>AnyEvent + backends (i.e. EV)
+<p>AnyEvent + back-ends (i.e. EV)
 
 <h2>Event handling:</h2>
 
 <p>Callbacks...
 
 <ul>
+<li>straightforward and simple to use</li>
 <li>very flexible</li>
 <li>lead to spaghetti code</li>
-</ul>
-</div>
-
-<div class="slide">
-<h1>Callbacks and spaghetti code</h1>
-
-<ul>
-
-<li>Regular programs are divided on layers or components with
-delimited interfaces (APIs)</li>
-
-<li>On the event-driven case, the program is divided attending
-exclusively at the non-blocking criteria into a flat set of small
-blocks.</li>
-
-<li>There is no hierarchie on the code, just a bunch of subroutines
-that are invoked in a non-explicit order from the event loop.</li>
-
-<li>State has to maintained at and outer scope (i.e inside global
-variables or objects).</li>
-
 </ul>
 </div>
 
@@ -133,6 +115,31 @@ variables or objects).</li>
     <td><img src="cb-flow.png" width="90%"/></td>
   </tr>
 </table>
+</div>
+
+<div class="slide">
+<h1>Callbacks and spaghetti code</h1>
+
+<ul>
+
+<li>Regular programs are divided on layers or components with
+delimited interfaces (APIs)</li>
+
+<li>On the event-driven case, the program is divided attending
+exclusively at the non-blocking criteria into a flat set of small
+blocks.</li>
+
+<li>There is no hierarchy on the code, just a bunch of subroutines
+that are invoked in a non-explicit order from the event loop.</li>
+
+<li>State has to maintained at and outer scope (i.e inside global
+variables or objects).</li>
+
+</ul>
+</div>
+
+<div class="slide">
+<h5>State machines</h5>
 </div>
 
 <div class="slide">
@@ -176,6 +183,10 @@ triggering event or condition; this is called a transition.
 </div>
 
 <div class="slide">
+<h5>Event-driven programming and state machines</h5>
+</div>
+
+<div class="slide">
 <h1>Event-driven programming and state machines</h1>
 
 State machines allow us to structure event-driven programs:
@@ -186,13 +197,13 @@ State machines allow us to structure event-driven programs:
   <li>The states, events and transitions can be defined using some domain specific language (DSL)</li>
   <li>State machines objects can also be viewed as agents running in parallel</li>
   <li>The states, events and transitions define the agent flow</li>
-  <li>The small, non-blocking, calls become the actions</li>
+  <li>The (remaining) non-blocking calls become the actions</li>
 </ul>
 
 </div>
 
 <div class="slide">
-<h1>POE::NFA - nondeterministic finite automaton</h1>
+<h1>POE::NFA - non-deterministic finite automaton</h1>
 <pre>
 POE::NFA->spawn(
     inline_states => {
@@ -219,16 +230,20 @@ POE::NFA->spawn(
 <div class="slide">
 <h1>CPAN and state-machines</h1>
 <p>Lots of modules: <b>POE::NFA</b>, FSA::Engine, FSA::Rules, FSM::Simple, Basset::Machine, etc...
-<p>No one is perfect!
+<p>No one fitted my requirements well enough:
 
 <ul>
-<li>Too abstract, too theorical, too generic</li>
-<li>Oriented towards some specific task (i.e. parsing)</li>
+<li>Too abstract, too theoretical or too generic</li>
+<li>Focused on some specific task (i.e. parsing)</li>
 <li>Specific to some framework</li>
 <li>Not very efficient</li>
 <li>...</li>
 </ul>
 
+</div>
+
+<div class="slide">
+<h5>Class::StateMachine</h5>
 </div>
 
 <div class="slide">
@@ -256,7 +271,7 @@ POE::NFA->spawn(
 <li>Lots of belts and whistles</li>
 <li>Class::StateMachine is still a low level framework</li>
 <li>Scary implementation yet, but it uses <b>mro</b> now</li>
-<li>Class::StateMachine::Declarative is high level companion</li>
+<li><b>Class::StateMachine::Declarative</b>, a high level companion</li>
 </ul>
 </div>
 
@@ -265,13 +280,15 @@ POE::NFA->spawn(
 
 <pre>
 class Foo;
+
 use parent 'Class::StateMachine';
 
+# define what to do when some event happens:
 sub foo :OnState(one) { ... }
 sub foo :OnState(two) { ... }
-
 ...
 
+# dispatch events
 $obj->state('one');
 $obj->foo;
 $obj->state('two');
@@ -282,42 +299,42 @@ $obj->foo;
 <div class="slide">
 <h1>Class::StateMachine under the hood</h1>
 
-<p>For every possible state, Class::StateMachine creates a new perl class.
+<ul>
+<li>For every possible state, Class::StateMachine creates a new Perl class.
 
-<p>Objects are reblessed on the fly when their state changes.
+<li>Objects are re-blessed on the fly when their state changes.
 
-<p>Some methods (enter_state, leave_state) are called automatically
+<li>Some methods (<i>enter_state</i>, <i>leave_state</i>) are called automatically
 when the state changes.
-
+</ul>
 </div>
 
+<div class="slide">
+<h5>Class::StateMachine::Declarative</h5>
+</div>
 
 <div class="slide">
 <h1>Class::StateMachine::Declarative</h1>
-<p>A high-level framework for building state-machines.
-
-<p>The aim is code clarity and maintainability.
-
-<p>Quite complex state-machines (tens of states).
-
-<p>It solves my problem quite well.
-
-<p>...don't know about yours.
-
-<p>Still a work in progress, still learning.
-
+<ul>
+<li>A high-level framework for building state-machines.
+<li>The aim is code clarity and maintainability.
+<li>Quite complex state-machines (tens of states).
+<li>It solves my problem quite well.
+<li>...don't know about yours.
+<li>Still a work in progress, still learning.
+</ul>
 </div>
 
 <div class="slide">
 <h1>Class::StateMachine::Declarative - Usage</h1>
 
-<p>Derive from Class::StateMachine...
+<ul><li>Derive from Class::StateMachine...
 
 <pre>
 use parent qw(Class::StateMachine); 
 </pre>
 
-<p>Use Class::StateMachine::Declarative to declare the state-machine
+<li>and use Class::StateMachine::Declarative to declare the state-machine
 states, transitions and actions:
 
 <pre>
@@ -325,7 +342,7 @@ use Class::StateMachine::Declarative
   foo => { ... },
   bar => { ... };
 </pre>
-
+</ul>
 </div>
 
 <div class="slide">
@@ -385,45 +402,47 @@ $state_name => { ...,
 </div>
 
 <div class="slide">
-<h2>Other keywords</h2>
+<h2>More keywords</h2>
 <ul>
-<li>before: running an action before some event triggers a transition.
-<p><pre>
-$state_name => { before => { $event_name => $method_name,
+  <li>
+    <div style="float: right; clear: left;">
+      <img src="advance-flow.png">
+    </div>
+      <b>advance</b>: moving forward is so common!
+      <p><pre>
+$state_name => { advance => $event_name,
+                 ... }
+      </pre>
+    </li>
+  <li><b>before</b>: running an action before some event triggers a transition.
+    <p><pre>
+$state_name => { before => { $event => $method,
                              ...
                            },
                  ...,
                }
-</pre>
-</li>
-<li>advance: moving forward is so common!
-<p><pre>
-$state_name => { advance => $event_name,
-                 ... }
-                 
-</pre>
-</li>
-</ul>
+      </pre>
+    </li>
+  </ul>
 </div>
-
 
 <div class="slide">
 <h1>Class::StateMachine::Declarative</h1>
-<h2>Example:</h2>
+<h2>Improved example:</h2>
 <pre>
 use Class::StateMachine::Declarative
   __any__ => { advance => 'on_done',
                transitions => { on_closed => 'stopped' } },
 
   auth    => { transitions => { on_error => 'login' },
-               substates => [ login => { enter => 'ask_login },
+               substates => [ login => { enter => 'ask_login' },
                               pwd   => { enter => 'ask_pwd' },
                                          before => { done => 'check_pwd' } } ] },
 
   repl    => { transitions => { on_error => 'ask' },
-               substates => [ ask => { enter => ask_cmd },
-                              run => { enter => run_cmd,
-                                       transitions => { on_done => ask } } ] },
+               substates => [ ask => { enter => 'ask_cmd' },
+                              run => { enter => 'run_cmd',
+                                       transitions => { on_done => 'ask' } } ] },
 
   stopped => { enter => 'tell_owner' };
 
@@ -433,11 +452,11 @@ use Class::StateMachine::Declarative
 <div class="slide">
 <h1>Class::StateMachine::Declarative</h1>
 
-<h2>More keywords:</h2>
+<h2>Yet more keywords:</h2>
 <ul>
-<li>delay: when you can't handle some event right now but want to save it for later
+<li><b>delay</b>: when you can't handle some event right now but want to save it for later
 
-<li>ignore: discard some uninteresting event
+<li><b>ignore</b>: discard some uninteresting event
 </ul>
 
 <p><pre>
@@ -449,7 +468,11 @@ $state_name => { delay => \@events_to_be_delayed,
 </div>
 
 <div class="slide">
-<h1>How to write maintenable programs</h1>
+<h5>How to write maintainable programs</h5>
+</div>
+
+<div class="slide">
+<h1>How to write maintainable programs</h1>
 
 <h2>The three layers approach</h2>
 
@@ -476,13 +499,21 @@ $state_name => { delay => \@events_to_be_delayed,
       <li>calls into AnyEvent</li>
     </ul>
   </li>
-  <li>The low level event-distpatcher (red layer)
+  <li>The low level event-dispatcher (red layer)
     <ul>
       <li>AnyEvent</li>
       <li>Related modules: AnyEvent::HTML, AnyEvent::Pg, etc.</li>
     </ul>
   </li>
 </ul>
+</div>
+
+<div class="slide">
+<h1>The three layers</h1>
+
+<p>The key to code maintainability is the API provided from the purple layer to the blue layer
+<p>
+<center><img src="three-layers-key.png"></center>
 </div>
 
 <div class="slide">
@@ -497,6 +528,10 @@ $state_name => { delay => \@events_to_be_delayed,
   <li>The methods on the purple layer should be flexible and feature rich.</li>
   <li>You may like to implement the purple layer as a collection of composable roles.</li>
 </ul>
+</div>
+
+<div class="slide">
+<h5>Examples</h5>
 </div>
 
 <div class="slide">
@@ -522,7 +557,29 @@ $state_name => { delay => \@events_to_be_delayed,
 </ul>
 </div>
 
+<div class="slide">
+<h5>Conclusions</h5>
+</div>
 
+<div class="slide">
+<h1>Conclusions</h1>
+
+<ul>
+<li>State machines can be used to structure event-driven programs
+<li>Class::StateMachine is a mature, low level and efficient framework
+<li>Class::StateMachine::Declarative is still a work in progress, though already interesting
+<li>The presented three-layers approach is an effective way to build maintainable programs
+<li>There is lot of place for innovation here, yet.
+</ul>
+</div>
+
+<div class="slide">
+<h5>Questions?</h5>
+</h5>
+
+<div class="slide">
+<h5>Thank you!</h5>
+</div>
 
 </div>
 

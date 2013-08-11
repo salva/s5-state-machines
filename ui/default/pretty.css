@@ -4,7 +4,7 @@ body {background: #FFF url(sm-1.jpeg) -16px 0 no-repeat; background-size: 100%; 
 :link, :visited {text-decoration: none; color: #00C;}
 #controls :active {color: #88A !important;}
 #controls :focus {outline: 1px dotted #227;}
-h1, h2, h3, h4 {font-size: 100%; margin: 0; padding: 0; font-weight: inherit;}
+h1, h2, h3, h4, h5 {font-size: 100%; margin: 0; padding: 0; font-weight: inherit;}
 h2 { font-weight: bold; }
 ul, pre {margin: 0; line-height: 1em;}
 html, body {margin: 0; padding: 0;}
@@ -44,6 +44,9 @@ div.long {font-size: 0.75em;}
   font: bold 150%/1em Helvetica, sans-serif; text-transform: capitalize;
   color: #DDE; background: #005;}
 .slide h3 {font-size: 130%;}
+.slide h5 {position: absolute; top: 2.7em; left: 87px; z-index: 1;
+  margin: 0; padding: 0.3em 0 0 50px; white-space: nowrap;
+  font: bold 150%/1em Helvetica, sans-serif; text-transform: capitalize;}
 h1 abbr {font-variant: small-caps;}
 
 div#controls {position: absolute; left: 50%; bottom: 0;

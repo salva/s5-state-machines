@@ -17,9 +17,79 @@
    inkscape:export-filename="/home/salva/g/s5/s5-state-machines/top-down-flow.png"
    inkscape:export-xdpi="57.973484"
    inkscape:export-ydpi="57.973484"
-   sodipodi:docname="New document 1">
+   sodipodi:docname="top-down-flow.svg">
   <defs
-     id="defs4" />
+     id="defs4">
+    <marker
+       inkscape:stockid="Arrow1Lstart"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Lstart"
+       style="overflow:visible">
+      <path
+         id="path3779"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt"
+         transform="scale(0.8) translate(12.5,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Lend"
+       style="overflow:visible;">
+      <path
+         id="path3782"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;"
+         transform="scale(0.8) rotate(180) translate(12.5,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleInM"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="TriangleInM"
+       style="overflow:visible">
+      <path
+         id="path3915"
+         d="M 5.77,0.0 L -2.88,5.0 L -2.88,-5.0 L 5.77,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt"
+         transform="scale(-0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Sstart"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Sstart"
+       style="overflow:visible">
+      <path
+         id="path3791"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt"
+         transform="scale(0.2) translate(6,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Mend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Mend"
+       style="overflow:visible;">
+      <path
+         id="path3788"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;"
+         transform="scale(0.4) rotate(180) translate(10,0)" />
+    </marker>
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3003"
+       is_visible="true" />
+  </defs>
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -46,7 +116,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -145,62 +215,10 @@
        inkscape:connection-end="#path2985"
        inkscape:connection-end-point="d4" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 282.08116,116.15263 182.06619,170.99892"
-       id="path3063"
-       inkscape:connector-type="polyline"
-       inkscape:connector-curvature="3"
-       inkscape:connection-end="#path2985-7"
-       inkscape:connection-end-point="d4" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 328.29453,126.43729 -26.41026,88.91453"
-       id="path3065"
-       inkscape:connector-type="polyline"
-       inkscape:connector-curvature="3"
-       inkscape:connection-start="#path2985"
-       inkscape:connection-start-point="d4"
-       inkscape:connection-end="#path2985-7-1"
-       inkscape:connection-end-point="d4" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 525.21503,233.90173 80.99851,28.34947"
-       id="path3075"
-       inkscape:connector-type="polyline"
-       inkscape:connector-curvature="3"
-       inkscape:connection-start="#path2985-7-18"
-       inkscape:connection-start-point="d4"
-       inkscape:connection-end="#path2985-7-9"
-       inkscape:connection-end-point="d4" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 463.26346,242.76286 382.45083,361.9615"
-       id="path3079"
-       inkscape:connector-type="polyline"
-       inkscape:connector-curvature="3"
-       inkscape:connection-start="#path2985-7-18"
-       inkscape:connection-start-point="d4"
-       inkscape:connection-end="#path2985-7-6"
-       inkscape:connection-end-point="d4" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 488.94522,243.57036 39.25241,111.86936"
-       id="path3081"
-       inkscape:connector-type="polyline"
-       inkscape:connector-curvature="3"
-       inkscape:connection-start="#path2985-7-18"
-       inkscape:connection-start-point="d4"
-       inkscape:connection-end="#path2985-7-7"
-       inkscape:connection-end-point="d4" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 369.02929,123.75136 84.14397,71.52237"
-       id="path3083"
-       inkscape:connector-type="polyline"
-       inkscape:connector-curvature="3"
-       inkscape:connection-start="#path2985"
-       inkscape:connection-start-point="d4"
-       inkscape:connection-end="#path2985-7-18"
-       inkscape:connection-end-point="d4" />
+       style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-mid:none;marker-end:url(#Arrow1Lend);marker-start:url(#Arrow1Lend);stroke-miterlimit:4;stroke-dasharray:none"
+       d="m 320.50417,98.22114 c 0,0 -193.23425,68.42925 -178.99502,87.15464 11.63904,15.306 176.08056,-82.04519 182.74361,-70.286 7.07716,12.49003 -54.35451,120.89193 -35.61158,123.70337 18.74294,2.81144 51.54307,-115.26905 63.72598,-119.01764 12.1829,-3.74858 102.14899,82.46891 103.08613,91.84038 0.93715,9.37147 -115.26904,159.31494 -101.21184,166.81211 14.0572,7.49718 99.33755,-155.56635 110.58331,-150.88062 11.24576,4.68574 47.79448,142.4463 61.85168,139.63486 14.0572,-2.81144 -47.79448,-131.20054 -28.1144,-138.69771 19.68008,-7.49717 113.39475,64.66312 123.70336,47.79448 C 632.57402,259.41037 536.04791,239.73029 492.93916,209.7416 449.83041,179.7529 352.36716,94.47255 352.36716,94.47255"
+       id="path3005"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="csssssssssssc" />
   </g>
 </svg>
